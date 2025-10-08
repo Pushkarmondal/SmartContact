@@ -63,7 +63,8 @@ SmartContact is a next-generation contact management system that goes beyond tra
 | **Framework** | ExpressJS | High-performance web framework |
 | **Language** | TypeScript 5.0 | Type-safe development |
 | **Primary DB** | PostgreSQL 15 | Relational data storage |
-| **Primary ORM** | Prisma ORM|
+| **Primary ORM** | Prisma ORM| Type-safe database access |
+| **Validation** | Zod| Validation of inputs and Outputs |
 | **Graph DB** | Neo4j 5.x | Relationship mapping |
 | **Cache** | Redis 7.x | Session & query caching |
 | **Search** | Elasticsearch 8.x | Full-text search engine |
@@ -325,13 +326,6 @@ Content-Type: application/json
   "interpretation": "Searching for contacts tagged as 'dentist' located in New York",
   "count": 1
 }
-
-## 🧪 Testing
-
-### **Run all tests**
-```bash
-bun test
-```
 
 ### **Run unit tests**
 ```bash
