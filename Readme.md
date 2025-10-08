@@ -326,28 +326,6 @@ Content-Type: application/json
   "interpretation": "Searching for contacts tagged as 'dentist' located in New York",
   "count": 1
 }
----
-
-## 🚢 Deployment
-
-### **Docker Production Build**
-
-1. Build the image:
-```bash
-docker build -t smartcontact:latest .
-```
-
-2. Run the container:
-```bash
-docker run -p 3000:3000 --env-file .env.production smartcontact:latest
-```
-
-### **Using Docker Compose**
-```bash
-docker-compose -f docker-compose.prod.yml up -d
-```
-
----
 
 ## 📊 Database Schema
 
