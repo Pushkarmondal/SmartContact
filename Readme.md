@@ -326,22 +326,6 @@ Content-Type: application/json
   "interpretation": "Searching for contacts tagged as 'dentist' located in New York",
   "count": 1
 }
-
-### **Run unit tests**
-```bash
-bun test:unit
-```
-
-### **Run integration tests**
-```bash
-bun test:integration
-```
-
-### **Run with coverage**
-```bash
-bun test:coverage
-```
-
 ---
 
 ## 🚢 Deployment
