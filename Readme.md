@@ -63,6 +63,7 @@ SmartContact is a next-generation contact management system that goes beyond tra
 | **Framework** | ExpressJS | High-performance web framework |
 | **Language** | TypeScript 5.0 | Type-safe development |
 | **Primary DB** | PostgreSQL 15 | Relational data storage |
+| **Primary ORM** | Prisma ORM|
 | **Graph DB** | Neo4j 5.x | Relationship mapping |
 | **Cache** | Redis 7.x | Session & query caching |
 | **Search** | Elasticsearch 8.x | Full-text search engine |
