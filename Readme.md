@@ -326,6 +326,7 @@ Content-Type: application/json
   "interpretation": "Searching for contacts tagged as 'dentist' located in New York",
   "count": 1
 }
+---
 
 ## 📊 Database Schema
 
