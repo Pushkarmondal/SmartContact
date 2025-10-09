@@ -95,4 +95,56 @@ router.get("/getContact/:id", authMiddleware, async(req, res) => {
     }
 })
 
+router.put("/updateContact/:id", authMiddleware, async(req, res) => {
+    try {
+        const contact = await prisma.contact.findUnique({
+            where: {
+                id: Number(req.params.id)
+            }
+        })
+        if(!contact) {
+            return res.status(404).json({ error: "Contact not found!" })
+        }
+        const updateContact = await prisma.contact.update({
+            where: {
+                id: Number(req.params.id)
+            },
+            data: {
+                name: req.body.name,
+                phone: req.body.phone,
+                email: req.body.email,
+                address: req.body.address,
+                notes: req.body.notes,
+                privacyLevel: req.body.privacyLevel
+            }
+        })
+        return res.status(200).json({ message: "Contact updated successfully", contact: updateContact })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({ error: "Internal Server Error in Update Contact routes" })
+    }
+})
+
+router.delete("/deleteContact/:id", authMiddleware, async(req, res) => {
+    try {
+        const contact = await prisma.contact.findUnique({
+            where: {
+                id: Number(req.params.id)
+            }
+        })
+        if(!contact) {
+            return res.status(404).json({ error: "Contact not found!" })
+        }
+        const deleteContact = await prisma.contact.delete({
+            where: {
+                id: Number(req.params.id)
+            }
+        })
+        return res.status(200).json({ message: "Contact deleted successfully", contact: deleteContact })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({ error: "Internal Server Error in Delete Contact routes" })
+    }
+})
+
 export default router;
