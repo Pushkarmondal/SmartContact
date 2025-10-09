@@ -19,6 +19,7 @@ router.post("/api/v1/login", async (req, res) => {
                 email: email
             },
             select: {
+                id: true, 
                 name: true,
                 email: true,
                 password: true,
@@ -33,7 +34,11 @@ router.post("/api/v1/login", async (req, res) => {
         if(!isPasswordValid) {
             return res.status(401).json({ message: "Invalid password" })
         }
-        const token = jwt.sign({email: user.email}, process.env.JWT_SECRET!, { expiresIn: "24h" })
+        const token = jwt.sign(
+            { id: user.id, email: user.email },
+            process.env.JWT_SECRET!,
+            { expiresIn: "24h" }
+        );
         return res.status(200).json({ message: "Login successful", user: safeUser, token })
     } catch (error) {
         console.log(error)
