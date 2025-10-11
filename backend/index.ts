@@ -2,6 +2,7 @@ import express from "express"
 import signup from "./src/auth/signup.services"
 import login from "./src/auth/login.services"
 import contacts from "./src/contactservices/contact.services"
+import relationship from "./src/relationships/relationship.services"
 
 const app = express()
 const PORT = 4002
@@ -12,6 +13,8 @@ app.use("/auth", signup)
 app.use("/auth", login)
 
 app.use("/contacts", contacts)
+
+app.use("/relationships", relationship)
 
 app.listen(PORT, ()=> {
     console.log(`App listening on port ${PORT}`)
