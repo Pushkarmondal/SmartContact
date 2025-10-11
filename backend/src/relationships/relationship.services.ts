@@ -14,6 +14,11 @@ router.post("/createRelationship", authMiddleware, async (req, res) => {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
+    // ✅ NEW: Prevent self-relationships
+    if (contactId === relatedContactId) {
+      return res.status(400).json({ message: "A contact cannot have a relationship with themselves" });
+    }
+
     // ✅ Step 1: Verify both contacts belong to the same authenticated user
     const [contact, relatedContact] = await Promise.all([
       prisma.contact.findFirst({
@@ -28,11 +33,13 @@ router.post("/createRelationship", authMiddleware, async (req, res) => {
       return res.status(403).json({ message: "Contacts must belong to the authenticated user" });
     }
 
-    // ✅ Step 2: Check if relationship already exists
+    // ✅ Step 2: Check if relationship already exists (bidirectional check)
     const findRelationship = await prisma.relationship.findFirst({
       where: {
-        contactId,
-        relatedContactId,
+        OR: [
+          { contactId, relatedContactId },
+          { contactId: relatedContactId, relatedContactId: contactId }, // Check reverse too
+        ],
       },
     });
 
@@ -45,17 +52,66 @@ router.post("/createRelationship", authMiddleware, async (req, res) => {
       data: {
         contactId,
         relatedContactId,
-        relationshipType: RelationshipType.FRIEND,
+        relationshipType: relationshipType as RelationshipType,
         strength,
         createdAt: new Date(),
       },
     });
-    return res.status(201).json({ message: "Relationship created successfully", createRelationship });
+    
+    return res.status(201).json({ 
+      message: "Relationship created successfully", 
+      relationship: createRelationship 
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error in createRelationship" });
   }
 });
 
+router.get("/getRelationships", authMiddleware, async (req, res) => {
+  try {
+    const relationships = await prisma.relationship.findMany({
+      where: {
+        AND: [
+          { contact: { userId: req.user!.id } },
+          { relatedContact: { userId: req.user!.id } },
+        ],
+      },
+      include: {
+        contact: {
+          select: {
+            id: true,
+            name: true,
+            phone: true,
+            email: true,
+            address: true,
+            privacyLevel: true,
+          },
+        },
+        relatedContact: {
+          select: {
+            id: true,
+            name: true,
+            phone: true,
+            email: true,
+            address: true,
+            privacyLevel: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    return res.status(200).json({ 
+      count: relationships.length,
+      relationships 
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error in getRelationships" });
+  }
+});
 
 export default router
