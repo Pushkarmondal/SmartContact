@@ -27,7 +27,7 @@ router.post("/createContact", authMiddleware, async(req, res) => {
                 email,
                 address,
                 notes,
-                privacyLevel: PrivacyLevel.PRIVATE,
+                privacyLevel: privacyLevel as PrivacyLevel,
                 user: {
                     connect: {
                         id: req.user!.id
